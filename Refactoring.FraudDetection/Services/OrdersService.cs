@@ -12,27 +12,37 @@ namespace Refactoring.FraudDetection.Services
         {
             foreach (var order in orders)
             {
-                //Normalize email
-                order.Email = EmailHelper.RemoveStringsFromEmail(order.Email, new[] { "." });
-                order.Email = EmailHelper.RemoveSubstringAfterDelimiterFromEmail(order.Email, "+");
+                NormalizeEmail(order);
+                NormalizeStreet(order);
+                NormalizeState(order);
+            }
+        }
 
-                //Normalize street
-                var streetReplacer = new Dictionary<string, string>
-                {
-                    {"st.","street" },
-                    {"rd.","road" }
-                };
-                order.Street = StringHelper.ReplaceMultiple(order.Street, streetReplacer);
-
-                //Normalize state
-                var stateReplacer = new Dictionary<string, string>
+        private static void NormalizeState(Order order)
+        {
+            var stateReplacer = new Dictionary<string, string>
                 {
                     {"il","illinois" },
                     {"ca","california" },
                     {"ny","new york" },
                 };
-                order.State = StringHelper.ReplaceMultiple(order.State, stateReplacer);
-            }
+            order.State = StringHelper.ReplaceMultiple(order.State, stateReplacer);
+        }
+
+        private static void NormalizeStreet(Order order)
+        {
+            var streetReplacer = new Dictionary<string, string>
+                {
+                    {"st.","street" },
+                    {"rd.","road" }
+                };
+            order.Street = StringHelper.ReplaceMultiple(order.Street, streetReplacer);
+        }
+
+        private static void NormalizeEmail(Order order)
+        {
+            order.Email = EmailHelper.RemoveStringsFromEmail(order.Email, new[] { "." });
+            order.Email = EmailHelper.RemoveSubstringAfterDelimiterFromEmail(order.Email, "+");
         }
 
         public List<Order> GetOrdersFromLines(string[] lines, char delimiter = ',')
