@@ -20,8 +20,7 @@ namespace Refactoring.FraudDetection.Models
         public string City { get => _City; set => _City = value.ToLower(); }
 
         private string _State;
-        public string State { get => _City; set => _City = value.ToLower(); }
-
+        public string State { get => _State; set => _State = value.ToLower(); }
 
         public string ZipCode { get; set; }
 
