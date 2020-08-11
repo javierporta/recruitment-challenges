@@ -16,6 +16,8 @@ namespace Refactoring.FraudDetection
         {
             var lines = FilesHandler.GetLinesFromFile(fileName);
 
+            //Note: It should be used with dependency injection, once service is registered in main program, 
+            //      which is quite easy to do with asp.net core app, for instance
             var orderService = new OrdersService();
             var orders = orderService.GetOrdersFromLines(lines);
 
